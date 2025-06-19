@@ -1,0 +1,89 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: user-service
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: root
+    password: 123456
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  spring:
+    shardingsphere:
+      datasource:
+        names: ds0,ds1
+        ds0:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          jdbc-url: jdbc:mysql://localhost:3306/user_db_0?serverTimezone=UTC&useSSL=false
+          username: root
+          password: 123456
+        ds1:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          jdbc-url: jdbc:mysql://localhost:3306/user_db_1?serverTimezone=UTC&useSSL=false
+          username: root
+          password: 123456
+
+      rules:
+        sharding:
+          tables:
+            users:
+              actual-data-nodes: ds$->{0..1}.users_$->{0..1}
+              database-strategy:
+                standard:
+                  sharding-column: user_id
+                  precise-algorithm-name: db-inline
+              table-strategy:
+                standard:
+                  sharding-column: user_id
+                  precise-algorithm-name: table-inline
+          sharding-algorithms:
+            db-inline:
+              type: INLINE
+              props:
+                algorithm-expression: ds$->{user_id % 2}
+            table-inline:
+              type: INLINE
+              props:
+                algorithm-expression: users_$->{user_id % 2}
+      props:
+        sql-show: true
+
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+
+seata:
+  enabled: true
+  application-id: user-service
+  tx-service-group: user_tx_group
+  enable-auto-data-source-proxy: true
+  data-source-proxy-mode: AT
+  registry:
+    type: file
+    file:
+      name: registry
+  config:
+    type: file
+    file:
+      name: file
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 5000
+
+logging:
+  level:
+    root: info
+    com.example: debug
