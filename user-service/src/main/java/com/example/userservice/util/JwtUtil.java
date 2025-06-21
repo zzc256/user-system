@@ -3,11 +3,13 @@ package com.example.userservice.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Component
 public class JwtUtil {
     private static final String SECRET_KEY = "your_secret_key"; // 可替换为更安全的秘钥
 

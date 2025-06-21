@@ -43,18 +43,13 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserSimpleDTO> getUser(@PathVariable Long userId, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || !token.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).build();
-        }
-
-        token = token.substring(7);
-        Long currentUserId = JwtUtil.getUserId(token);
-        String role = JwtUtil.getRole(token);
+        Long currentUserId = (Long) request.getAttribute("userId");
+        String role = (String) request.getAttribute("role");
 
         UserSimpleDTO dto = userService.getUserByIdWithPermission(userId, currentUserId, role);
         return ResponseEntity.ok(dto);
     }
+
     @PutMapping("/{userId}")
     public ResponseEntity<String> updateUser(@PathVariable Long userId,
                                              @RequestBody @Valid UserUpdateDTO dto,

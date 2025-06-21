@@ -10,6 +10,12 @@ spring:
     port: 5672
     username: guest
     password: guest
+    listener:
+      simple:
+        acknowledge-mode: auto
+        prefetch: 1
+      template:
+        mandatory: true
 
   datasource:
     url: jdbc:mysql://39.107.70.37:3306/log_db?serverTimezone=UTC&useSSL=false

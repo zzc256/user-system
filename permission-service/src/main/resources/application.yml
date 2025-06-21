@@ -6,7 +6,7 @@ spring:
     name: permission-service
 
   datasource:
-    url: jdbc:mysql://39.107.70.37:3306/permission_db?serverTimezone=UTC&useSSL=false
+    url: jdbc:mysql://localhost:3306/permission_db?serverTimezone=UTC&useSSL=false
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,3 +15,27 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+seata:
+      enabled: true
+      application-id: user-service
+      tx-service-group: user_tx_group
+      enable-auto-data-source-proxy: true
+      data-source-proxy-mode: AT
+      registry:
+        type: nacos
+        nacos:
+          server-addr: 39.107.70.37:8848
+          group: SEATA_GROUP
+          namespace: ""
+          username: nacos
+          password: nacos
+      config:
+            type: nacos
+            nacos:
+              server-addr: 39.107.70.37:8848
+              group: SEATA_GROUP
+              namespace: ""
+              username: nacos
+              password: nacos
+
+

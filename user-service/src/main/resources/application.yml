@@ -1,7 +1,15 @@
 server:
   port: 8081
-
+  address: 0.0.0.0
+  servlet:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
 spring:
+  datasource:
+    druid:
+      validation-query: SELECT 1
   application:
     name: user-service
 
@@ -24,13 +32,13 @@ spring:
           driver-class-name: com.mysql.cj.jdbc.Driver
           jdbc-url: jdbc:mysql://39.107.70.37:3306/user_db_0?serverTimezone=UTC&useSSL=false
           username: root
-          password: 123456
+          password: Root@123456
         ds1:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
           jdbc-url: jdbc:mysql://39.107.70.37:3306/user_db_1?serverTimezone=UTC&useSSL=false
           username: root
-          password: 123456
+          password: Root@123456
 
       rules:
         sharding:
@@ -77,7 +85,6 @@ seata:
     type: nacos
     nacos:
       server-addr: 39.107.70.37:8848
-      group: SEATA_GROUP
       namespace: ""
       username: nacos
       password: nacos

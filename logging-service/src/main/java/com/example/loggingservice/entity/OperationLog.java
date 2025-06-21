@@ -5,12 +5,14 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
-@TableName("operation_log")
+@TableName("operation_logs")
 public class OperationLog {
-    private Long id;
+    private Long log_id;
     private Long userId;
     private String action;
     private String ip;
     private String detail;
     private LocalDateTime gmtCreate;
+
+
 }
