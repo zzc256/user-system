@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     @Transactional
-    @GlobalTransactional
+    @GlobalTransactional(name = "user-register", rollbackFor = Exception.class)
     public void register(UserRegisterDTO dto, String ip) {
         Long userId = idGenerator.nextId();
 

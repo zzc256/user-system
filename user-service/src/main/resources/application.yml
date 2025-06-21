@@ -6,29 +6,29 @@ spring:
     name: user-service
 
   rabbitmq:
-    host: localhost
+    host: 39.107.70.37
     port: 5672
-    username: root
-    password: 123456
+    username: guest
+    password: guest
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
 
-  spring:
+
     shardingsphere:
       datasource:
         names: ds0,ds1
         ds0:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
-          jdbc-url: jdbc:mysql://localhost:3306/user_db_0?serverTimezone=UTC&useSSL=false
+          jdbc-url: jdbc:mysql://39.107.70.37:3306/user_db_0?serverTimezone=UTC&useSSL=false
           username: root
           password: 123456
         ds1:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
-          jdbc-url: jdbc:mysql://localhost:3306/user_db_1?serverTimezone=UTC&useSSL=false
+          jdbc-url: jdbc:mysql://39.107.70.37:3306/user_db_1?serverTimezone=UTC&useSSL=false
           username: root
           password: 123456
 
@@ -56,10 +56,8 @@ spring:
                 algorithm-expression: users_$->{user_id % 2}
       props:
         sql-show: true
+        proxy-seata-enabled: true
 
-    jackson:
-      date-format: yyyy-MM-dd HH:mm:ss
-      time-zone: GMT+8
 
 seata:
   enabled: true
@@ -68,13 +66,21 @@ seata:
   enable-auto-data-source-proxy: true
   data-source-proxy-mode: AT
   registry:
-    type: file
-    file:
-      name: registry
+    type: nacos
+    nacos:
+      server-addr: 39.107.70.37:8848
+      group: SEATA_GROUP
+      namespace: ""
+      username: nacos
+      password: nacos
   config:
-    type: file
-    file:
-      name: file
+    type: nacos
+    nacos:
+      server-addr: 39.107.70.37:8848
+      group: SEATA_GROUP
+      namespace: ""
+      username: nacos
+      password: nacos
 
 feign:
   client:
